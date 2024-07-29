@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  dcs-postgres:
+    user: "${UID}:${GID}"
+    image: postgres:15.3-alpine
+    container_name: dcs-postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+  dcs-pgadmin:
+    user: "${UID}:${GID}"
+    image: dpage/pgadmin4:latest
+    container_name: dcs-pgadmin
+    restart: always
+    depends_on:
+      - dcs-postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@reporte.me
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - 8181:80
+    volumes:
+      - ./data/pgadmin:/var/lib/pgadmin
+
+  rabbit-mq:
+    image: rabbitmq:3-management # Usa a imagem RabbitMQ com console de gerenciamento
+    container_name: rabbit-mq
+    ports:
+      - "5672:5672"    # Porta para o protocolo AMQP
+      - "15672:15672"  # Porta para o console de gerenciamento
+    environment:
+      RABBITMQ_DEFAULT_USER: admin@reporte.me # Usuário padrão
+      RABBITMQ_DEFAULT_PASS: admin            # Senha padrão
