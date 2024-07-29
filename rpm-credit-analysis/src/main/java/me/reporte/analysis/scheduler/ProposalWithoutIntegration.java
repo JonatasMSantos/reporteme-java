@@ -1,5 +1,7 @@
 package me.reporte.analysis.scheduler;
 
+import me.reporte.analysis.mapper.ProposalMapper;
+import me.reporte.core.dto.ProposalResponseDTO;
 import me.reporte.core.entity.Proposal;
 import me.reporte.core.repository.ProposalRepository;
 import me.reporte.analysis.service.RabbitMQNotificationService;
@@ -32,7 +34,8 @@ public class ProposalWithoutIntegration {
     public void findProposalWithoutIntegration() {
         proposalRepository.findAllByIntegratedIsFalse().forEach(proposal -> {
             try {
-                rabbitMQNotificationService.notify(proposal, this.exchange);
+                ProposalResponseDTO proposalDTO = ProposalMapper.INSTANCE.convertEntityToDTO(proposal);
+                rabbitMQNotificationService.notify(proposalDTO, this.exchange);
                 markProsalIntegration(proposal);
             } catch (RuntimeException re) {
                 logger.error(re.getMessage());

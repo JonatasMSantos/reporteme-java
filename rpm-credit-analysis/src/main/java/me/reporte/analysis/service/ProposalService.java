@@ -31,9 +31,10 @@ public class ProposalService implements Serializable {
         Proposal proposal = ProposalMapper.INSTANCE.convertDTOTOProposal(req);
         Proposal savedProposal = proposalRepository.save(proposal);
 
-        notifyRabbitMQ(savedProposal);
+        ProposalResponseDTO proposalDTO = ProposalMapper.INSTANCE.convertEntityToDTO(savedProposal);
+        notifyRabbitMQ(proposalDTO);
 
-        return ProposalMapper.INSTANCE.convertEntityToDTO(savedProposal);
+        return proposalDTO;
     }
 
     public List<ProposalResponseDTO> findAll() {
@@ -41,12 +42,13 @@ public class ProposalService implements Serializable {
         return ProposalMapper.INSTANCE.convertListEntityToListDTO(proposals);
     }
 
-    public void notifyRabbitMQ(Proposal proposal) {
+    public void notifyRabbitMQ(ProposalResponseDTO proposal) {
         try {
             rabbitMQNotificationService.notify(proposal, exchange);
         } catch (RuntimeException ex) {
-            proposal.setIntegrated(false);
-            proposalRepository.save(proposal);
+            Proposal updatedProposal = new Proposal(proposal.getId());
+            updatedProposal.setIntegrated(false);
+            proposalRepository.save(updatedProposal);
         }
     }
 

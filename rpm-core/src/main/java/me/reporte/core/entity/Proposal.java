@@ -37,4 +37,7 @@ public class Proposal {
     @JsonManagedReference // evita mapeamento recursivo
     private User user;
 
+    public Proposal(Long id) {
+        this.id = id;
+    }
 }

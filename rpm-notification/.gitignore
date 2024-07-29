@@ -6,7 +6,7 @@ target/
 
 ## Docker Files ##
 data/
-**/*.env
+.env
 
 ### STS ###
 .apt_generated
