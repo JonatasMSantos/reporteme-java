@@ -1,4 +1,4 @@
-package me.reporte.analysis.config;
+package me.reporte.proposal.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -45,15 +45,15 @@ public class RabbitMQConfiguration {
 
     //region create queues
     @Bean
-    public Queue createQueuePendingProposalMSCreditAnalysis() {
-        return QueueBuilder.durable("pending-proposal.ms-credit-analysis").build();
+    public Queue createQueueCompletedProposalMSProposal() {
+        return QueueBuilder.durable("completed-proposal.ms-proposal").build();
     }
     //endregion create queues
 
     //region create bindings
     @Bean
-    public Binding createBindingPendingProposeMSCreditAnalysis() {
-        return BindingBuilder.bind(createQueuePendingProposalMSCreditAnalysis()).to(createExchangePendingProposal());
+    public Binding createBindingCompletedProposeMSProposal() {
+        return BindingBuilder.bind(createQueueCompletedProposalMSProposal()).to(createExchangeCompletedProposal());
     }
     //endregion create bindings
 

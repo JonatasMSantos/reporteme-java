@@ -1,10 +1,10 @@
-package me.reporte.analysis.scheduler;
+package me.reporte.proposal.scheduler;
 
-import me.reporte.analysis.mapper.ProposalMapper;
+import me.reporte.proposal.mapper.ProposalMapper;
 import me.reporte.core.dto.ProposalResponseDTO;
 import me.reporte.core.entity.Proposal;
 import me.reporte.core.repository.ProposalRepository;
-import me.reporte.analysis.service.RabbitMQNotificationService;
+import me.reporte.proposal.service.RabbitMQNotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +24,7 @@ public class ProposalWithoutIntegration {
 
     public ProposalWithoutIntegration(ProposalRepository proposalRepository,
                                       RabbitMQNotificationService rabbitMQNotificationService,
-                                      @Value("${rabbitmq.pendingProposal.exchange}") String exchange)  {
+                                      @Value("${rabbitmq.exchange.pending-proposal}") String exchange)  {
         this.proposalRepository = proposalRepository;
         this.rabbitMQNotificationService = rabbitMQNotificationService;
         this.exchange = exchange;
@@ -35,12 +35,11 @@ public class ProposalWithoutIntegration {
         proposalRepository.findAllByIntegratedIsFalse().forEach(proposal -> {
             try {
                 ProposalResponseDTO proposalDTO = ProposalMapper.INSTANCE.convertEntityToDTO(proposal);
-                rabbitMQNotificationService.notify(proposalDTO, this.exchange);
                 markProsalIntegration(proposal);
+                rabbitMQNotificationService.notify(proposalDTO, this.exchange);
             } catch (RuntimeException re) {
                 logger.error(re.getMessage());
             }
-
         });
     }
 

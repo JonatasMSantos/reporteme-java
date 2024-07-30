@@ -1,8 +1,8 @@
-package me.reporte.analysis.service;
+package me.reporte.proposal.service;
 
 import me.reporte.core.dto.ProposalRequestDTO;
 import me.reporte.core.dto.ProposalResponseDTO;
-import me.reporte.analysis.mapper.ProposalMapper;
+import me.reporte.proposal.mapper.ProposalMapper;
 import me.reporte.core.entity.Proposal;
 import me.reporte.core.repository.ProposalRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,16 +12,16 @@ import java.io.Serializable;
 import java.util.List;
 
 @Service
-public class ProposalService implements Serializable {
+public class PendingProposalService implements Serializable {
 
     private final ProposalRepository proposalRepository;
     private final RabbitMQNotificationService rabbitMQNotificationService;
 
     private final String exchange;
 
-    public ProposalService(ProposalRepository proposalRepository,
-                           RabbitMQNotificationService rabbitMQNotificationService,
-                           @Value("${rabbitmq.pendingProposal.exchange}") String exchange) {
+    public PendingProposalService(ProposalRepository proposalRepository,
+                                  RabbitMQNotificationService rabbitMQNotificationService,
+                                  @Value("${rabbitmq.exchange.pending-proposal}") String exchange) {
         this.proposalRepository = proposalRepository;
         this.rabbitMQNotificationService = rabbitMQNotificationService;
         this.exchange = exchange;

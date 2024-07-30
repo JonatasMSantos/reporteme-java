@@ -1,4 +1,4 @@
-package me.reporte.analysis.mapper;
+package me.reporte.proposal.mapper;
 
 import me.reporte.core.entity.Proposal;
 import me.reporte.core.dto.ProposalRequestDTO;

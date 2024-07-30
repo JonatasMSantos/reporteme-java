@@ -2,6 +2,7 @@ package me.reporte.notification.service;
 
 import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.model.PublishRequest;
+import com.amazonaws.services.sns.model.PublishResult;
 import org.springframework.stereotype.Service;
 
 @Service

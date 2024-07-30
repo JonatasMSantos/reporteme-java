@@ -1,9 +1,9 @@
-package me.reporte.analysis.controller;
+package me.reporte.proposal.controller;
 
 import lombok.AllArgsConstructor;
 import me.reporte.core.dto.ProposalRequestDTO;
 import me.reporte.core.dto.ProposalResponseDTO;
-import me.reporte.analysis.service.ProposalService;
+import me.reporte.proposal.service.PendingProposalService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,11 +15,11 @@ import java.util.List;
 @RequestMapping("/proposta")
 public class ProposalController {
 
-    private ProposalService proposalService;
+    private PendingProposalService pendingProposalService;
 
     @PostMapping
     public ResponseEntity<ProposalResponseDTO> create(@RequestBody ProposalRequestDTO req) {
-        ProposalResponseDTO proposalDTO = proposalService.create(req);
+        ProposalResponseDTO proposalDTO = pendingProposalService.create(req);
 
 
         return ResponseEntity.created(
@@ -32,7 +32,7 @@ public class ProposalController {
 
     @GetMapping
     public ResponseEntity<List<ProposalResponseDTO>> findAll() {
-        List<ProposalResponseDTO> values = proposalService.findAll();
+        List<ProposalResponseDTO> values = pendingProposalService.findAll();
         return ResponseEntity.ok(values);
     }
 }

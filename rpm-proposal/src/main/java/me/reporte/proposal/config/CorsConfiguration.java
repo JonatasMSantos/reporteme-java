@@ -1,4 +1,4 @@
-package me.reporte.analysis.config;
+package me.reporte.proposal.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

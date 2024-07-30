@@ -21,6 +21,7 @@
         <module>rpm-credit-analysis</module>
         <module>rpm-notification</module>
         <module>rpm-core</module>
+        <module>rpm-proposal</module>
     </modules>
 
     <url>https://reporte.me</url>

@@ -1,4 +1,4 @@
-package me.reporte.analysis;
+package me.reporte.proposal;
 
 import java.util.Arrays;
 

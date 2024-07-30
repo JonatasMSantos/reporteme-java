@@ -1,4 +1,4 @@
-package me.reporte.analysis.service;
+package me.reporte.proposal.service;
 
 import lombok.AllArgsConstructor;
 import me.reporte.core.dto.ProposalRequestDTO;
