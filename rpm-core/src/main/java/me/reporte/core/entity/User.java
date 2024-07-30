@@ -37,7 +37,7 @@ public class User implements Serializable {
 
     private String phoneNumber;
 
-    private String income;
+    private Double income;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Proposal> proposal;

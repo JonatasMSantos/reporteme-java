@@ -15,25 +15,25 @@ public class ProposalResponseDTO implements Serializable {
 
     private Long id;
 
-    private String nome;
+    private String firstName;
 
-    private String sobrenome;
+    private String lastName;
 
-    private String telefone;
+    private String phoneNumber;
 
-    private String cpf;
+    private String document;
 
-    private String renda;
+    private Double income;
 
-    private Double valorSolicitado;
+    private Double requestAmount;
 
-    private String valorSolicitadoFmt;
+    private String requestAmountFmt;
 
-    private int prazoPagamento;
+    private int paymentTerm;
 
-    private Boolean aprovado;
+    private Boolean approved;
 
-    private Boolean integrado;
+    private Boolean integrated;
 
-    private String observacao;
+    private String observation;
 }

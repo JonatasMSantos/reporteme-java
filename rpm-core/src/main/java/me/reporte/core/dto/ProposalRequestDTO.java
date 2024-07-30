@@ -12,18 +12,18 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProposalRequestDTO implements Serializable {
 
-    private String nome;
+    private String firstName;
 
-    private String sobrenome;
+    private String lastName;
 
-    private String telefone;
+    private String phoneNumber;
 
-    private String cpf;
+    private String document;
 
-    private String renda;
+    private Double income;
 
-    private Double valorSolicitado;
+    private Double requestAmount;
 
-    private int prazoPagamento;
+    private int paymentTerm;
 
 }

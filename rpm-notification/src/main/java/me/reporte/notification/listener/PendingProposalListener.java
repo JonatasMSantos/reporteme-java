@@ -17,7 +17,7 @@ public class PendingProposalListener {
 
     @RabbitListener(queues = "${rabbitmq.queue.pending-proposal}")
     public void pendingProposal(ProposalResponseDTO proposal) {
-        String message = String.format(MessagesConstant.PENDING_PROPOSAL, proposal.getNome());
-        notification.notify(proposal.getTelefone(), message);
+        String message = String.format(MessagesConstant.PENDING_PROPOSAL, proposal.getFirstName());
+        notification.notify(proposal.getPhoneNumber(), message);
     }
 }
