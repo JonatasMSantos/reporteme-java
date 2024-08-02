@@ -21,6 +21,9 @@ public class RabbitMQConfiguration {
     @Value("${rabbitmq.exchange.completed-proposal}")
     private String exchangeCompletedProposal;
 
+    @Value("${rabbitmq.exchange.dlx.pending-proposal}")
+    private String exchangeDlxPendingProposal;
+
     @Bean
     public RabbitAdmin createRabbitAdmin(ConnectionFactory connectionFactory) {
         return new RabbitAdmin(connectionFactory);
@@ -41,12 +44,27 @@ public class RabbitMQConfiguration {
     public FanoutExchange createExchangeCompletedProposal() {
         return ExchangeBuilder.fanoutExchange(this.exchangeCompletedProposal).build();
     }
+
+    @Bean
+    public FanoutExchange createDlxExchangePendingProposal() {
+        return ExchangeBuilder.fanoutExchange(this.exchangeDlxPendingProposal).build();
+    }
     //endregion create exchange
 
     //region create queues
     @Bean
+    public Queue createQueuePendingProposalMSProposal() {
+        return QueueBuilder.durable("pending-proposal.ms-proposal").build();
+    }
+
+    @Bean
     public Queue createQueueCompletedProposalMSProposal() {
         return QueueBuilder.durable("completed-proposal.ms-proposal").build();
+    }
+
+    @Bean
+    public Queue createQueuePendingProposalDLQ() {
+        return QueueBuilder.durable("pending-proposal.dlq").build();
     }
     //endregion create queues
 
@@ -55,6 +73,17 @@ public class RabbitMQConfiguration {
     public Binding createBindingCompletedProposeMSProposal() {
         return BindingBuilder.bind(createQueueCompletedProposalMSProposal()).to(createExchangeCompletedProposal());
     }
+
+    @Bean
+    public Binding createBindingPendingProposeMSProposal() {
+        return BindingBuilder.bind(createQueuePendingProposalMSProposal()).to(createExchangePendingProposal());
+    }
+
+    @Bean
+    public Binding createBindingDLXPendingProposeMSProposal() {
+        return BindingBuilder.bind(createQueuePendingProposalDLQ()).to(createDlxExchangePendingProposal());
+    }
+
     //endregion create bindings
 
     @Bean

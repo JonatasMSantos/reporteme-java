@@ -12,7 +12,7 @@
     <artifactId>rpm-proposal</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>Reporte.me Proposal</name>
-    <description>Reporte.me - Proposal endpoint - Microservice to manage proposal and send to RabbitMQ</description>
+    <description>Reporte.me - Proposal endpoint - Microservice to manage proposal and send to RabbitMQ - </description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -72,6 +72,30 @@
     <!-- Pom.xml do módulo: rpm-credit-analysis -->
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.3.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>me.reporte.proposal.ProposalApplication</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

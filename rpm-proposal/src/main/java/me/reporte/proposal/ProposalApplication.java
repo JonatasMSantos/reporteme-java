@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 
 import java.util.TimeZone;
 
@@ -15,6 +16,7 @@ import java.util.TimeZone;
 @EntityScan({"me.reporte.core.entity"})
 @EnableJpaRepositories({"me.reporte.core.repository"})
 @ComponentScan(basePackages = {"me.reporte.core", "me.reporte.proposal"})
+@EnableWebSocketMessageBroker
 public class ProposalApplication {
 
 	public static void main(String[] args) {

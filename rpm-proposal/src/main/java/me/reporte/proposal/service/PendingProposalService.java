@@ -5,6 +5,7 @@ import me.reporte.core.dto.ProposalResponseDTO;
 import me.reporte.proposal.mapper.ProposalMapper;
 import me.reporte.core.entity.Proposal;
 import me.reporte.core.repository.ProposalRepository;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

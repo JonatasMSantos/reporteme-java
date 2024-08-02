@@ -1,38 +1,94 @@
 version: "3.8"
 services:
-  dcs-postgres:
-    user: "${UID}:${GID}"
-    image: postgres:15.3-alpine
-    container_name: dcs-postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
+  proposal-ms:
+    build:
+      context: .
+      dockerfile: ./rpm-proposal/rpm-proposal.dockerfile
     ports:
-      - 5432:5432
-    volumes:
-      - ./data/postgres:/var/lib/postgresql/data
-  dcs-pgadmin:
-    user: "${UID}:${GID}"
-    image: dpage/pgadmin4:latest
-    container_name: dcs-pgadmin
-    restart: always
+      - "8080:8080"
     depends_on:
-      - dcs-postgres
+#      dcs-postgres:
+#        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - proposal-network
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@reporte.me
-      PGADMIN_DEFAULT_PASSWORD: admin
-    ports:
-      - 8181:80
-    volumes:
-      - ./data/pgadmin:/var/lib/pgadmin
+      - spring.profiles.active=prod
+      - APPLICATION_PORT=8080
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=admin@reporte.me
+      - RABBITMQ_PASS=admin
+#      - DB_HOST=dcs-postgres
+#      - DB_PORT=5432
+#      - DB_NAME=reporteStore
+#      - DB_USER=postgres
+#      - DB_PASSWORD=postgres
+      - DB_HOST=ep-empty-wind-67530606.us-east-2.aws.neon.tech
+#      - DB_PORT=5432
+      - DB_NAME=reporteStore
+      - DB_USER=reporteme
+      - DB_PASSWORD=Iiwx5GAV1PHU
 
-  rabbit-mq:
+#  dcs-postgres:
+#    container_name: dcs-postgres
+#    user: "${UID}:${GID}"
+#    image: postgres:15.3-alpine
+#    healthcheck:
+#      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+#      interval: 10s
+#      retries: 5
+#      start_period: 30s
+#      timeout: 10s
+#    restart: always
+#    environment:
+#      POSTGRES_PASSWORD: postgres
+#      POSTGRES_USER: postgres
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - ./../postgresql-data/postgres:/var/lib/postgresql/data
+#    networks:
+#      - proposal-network
+
+#  dcs-pgadmin:
+#    user: "${UID}:${GID}"
+#    image: dpage/pgadmin4:latest
+#    container_name: dcs-pgadmin
+#    restart: always
+#    depends_on:
+#      - dcs-postgres
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: admin@reporte.me
+#      PGADMIN_DEFAULT_PASSWORD: admin
+#    ports:
+#      - "8181:80"
+#    volumes:
+#      - ./data/pgadmin:/var/lib/pgadmin
+#    networks:
+#      - proposal-network
+
+  rabbitmq:
     image: rabbitmq:3-management # Usa a imagem RabbitMQ com console de gerenciamento
-    container_name: rabbit-mq
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      timeout: 5s
+      interval: 5s
+      retries: 3
+    container_name: rabbitmq
     ports:
       - "5672:5672"    # Porta para o protocolo AMQP
       - "15672:15672"  # Porta para o console de gerenciamento
     environment:
       RABBITMQ_DEFAULT_USER: admin@reporte.me # Usuário padrão
       RABBITMQ_DEFAULT_PASS: admin            # Senha padrão
+#    volumes:
+#      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/mnesia/
+#      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    networks:
+      - proposal-network
+
+networks:
+  proposal-network:
+    driver: bridge

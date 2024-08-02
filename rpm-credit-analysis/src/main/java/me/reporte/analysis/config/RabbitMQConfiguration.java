@@ -21,6 +21,9 @@ public class RabbitMQConfiguration {
     @Value("${rabbitmq.exchange.completed-proposal}")
     private String exchangeCompletedProposal;
 
+    @Value("${rabbitmq.exchange.dlx.pending-proposal}")
+    private String exchangeDlxPendingProposal;
+
     @Bean
     public RabbitAdmin createRabbitAdmin(ConnectionFactory connectionFactory) {
         return new RabbitAdmin(connectionFactory);
@@ -46,7 +49,10 @@ public class RabbitMQConfiguration {
     //region create queues
     @Bean
     public Queue createQueuePendingProposalMSCreditAnalysis() {
-        return QueueBuilder.durable("pending-proposal.ms-credit-analysis").build();
+        return QueueBuilder.durable("pending-proposal.ms-credit-analysis")
+                .deadLetterExchange(this.exchangeDlxPendingProposal)
+                .maxPriority(10)
+                .build();
     }
     //endregion create queues
 

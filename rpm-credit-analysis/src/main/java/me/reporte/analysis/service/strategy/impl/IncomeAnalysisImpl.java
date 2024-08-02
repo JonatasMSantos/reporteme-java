@@ -2,7 +2,11 @@ package me.reporte.analysis.service.strategy.impl;
 
 import me.reporte.analysis.service.strategy.PointCalculation;
 import me.reporte.core.dto.ProposalResponseDTO;
+import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
+@Component
 public class IncomeAnalysisImpl implements PointCalculation {
     @Override
     public int calculate(ProposalResponseDTO proposal) {
@@ -10,6 +14,6 @@ public class IncomeAnalysisImpl implements PointCalculation {
     }
 
     private boolean incomeAnalysis(ProposalResponseDTO proposal) {
-        return proposal.getIncome() > proposal.getRequestAmount();
+        return Optional.ofNullable(proposal.getIncome()).orElse(0.0) > Optional.ofNullable(proposal.getRequestAmount()).orElse(0.0);
     }
 }
